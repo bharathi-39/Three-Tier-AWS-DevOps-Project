@@ -1,0 +1,8 @@
+from datetime import datetime, timezone
+from .extensions import db
+class User(db.Model):
+    __tablename__='users'; id=db.Column(db.Integer,primary_key=True); name=db.Column(db.String(120),nullable=False); email=db.Column(db.String(160),unique=True,nullable=False,index=True); role=db.Column(db.String(30),nullable=False,default='employee'); created_at=db.Column(db.DateTime(timezone=True),default=lambda:datetime.now(timezone.utc))
+class Ticket(db.Model):
+    __tablename__='tickets'; id=db.Column(db.Integer,primary_key=True); ticket_number=db.Column(db.String(20),unique=True,index=True); title=db.Column(db.String(180),nullable=False,index=True); description=db.Column(db.Text,nullable=False); priority=db.Column(db.String(20),nullable=False,index=True); status=db.Column(db.String(30),nullable=False,index=True,default='NEW'); created_by=db.Column(db.Integer,db.ForeignKey('users.id',ondelete='RESTRICT'),nullable=False); created_at=db.Column(db.DateTime(timezone=True),default=lambda:datetime.now(timezone.utc)); updated_at=db.Column(db.DateTime(timezone=True),default=lambda:datetime.now(timezone.utc),onupdate=lambda:datetime.now(timezone.utc)); creator=db.relationship('User'); comments=db.relationship('Comment',cascade='all, delete-orphan',backref='ticket',lazy=True)
+class Comment(db.Model):
+    __tablename__='comments'; id=db.Column(db.Integer,primary_key=True); ticket_id=db.Column(db.Integer,db.ForeignKey('tickets.id',ondelete='CASCADE'),nullable=False,index=True); comment=db.Column(db.Text,nullable=False); author=db.Column(db.String(120),nullable=False,default='Admin'); created_at=db.Column(db.DateTime(timezone=True),default=lambda:datetime.now(timezone.utc))

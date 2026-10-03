@@ -128,10 +128,3 @@ Backend  : http://localhost:5000/api
 
 This project demonstrates how a modern 3-tier application can be developed, containerized, deployed, and managed using industry-standard DevOps tools and practices.
 
----
-
-## Author
-
-Bharathi Ganesh Sankarapandi
-
-Cloud Support Engineer | Aspiring DevOps Engineer

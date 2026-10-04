@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: bgcv-config, namespace: bgcv-servicehub}
+data: {POSTGRES_DB: bgcv_servicehub, POSTGRES_USER: bgcv, CORS_ORIGINS: https://servicehub.example.com}
+---
+apiVersion: v1
+kind: Secret
+metadata: {name: bgcv-secrets, namespace: bgcv-servicehub}
+type: Opaque
+stringData: {POSTGRES_PASSWORD: , DATABASE_URL: postgresql+psycopg2://bgcv:REPLACE_ME@postgres:5432/bgcv_servicehub}

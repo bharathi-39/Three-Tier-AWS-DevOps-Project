@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: backend, namespace: bgcv-servicehub}
+spec:
+  replicas: 2
+  strategy: {type: RollingUpdate}
+  selector: {matchLabels: {app: backend}}
+  template:
+    metadata: {labels: {app: backend}}
+    spec:
+      securityContext: {runAsNonRoot: true}
+      containers:
+      - name: backend
+        image: REPLACE_ECR/backend:latest
+        ports: [{containerPort: 5000}]
+        envFrom: [{configMapRef: {name: bgcv-config}}, {secretRef: {name: bgcv-secrets}}]
+        readinessProbe: {httpGet: {path: /api/health/ready, port: 5000}, initialDelaySeconds: 5, periodSeconds: 10}
+        livenessProbe: {httpGet: {path: /api/health/live, port: 5000}, initialDelaySeconds: 15, periodSeconds: 20}
+        resources: {requests: {cpu: 100m, memory: 128Mi}, limits: {cpu: 500m, memory: 512Mi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: backend, namespace: bgcv-servicehub}
+spec: {selector: {app: backend}, ports: [{port: 5000, targetPort: 5000}]}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: frontend, namespace: bgcv-servicehub}
+spec:
+  replicas: 2
+  selector: {matchLabels: {app: frontend}}
+  template:
+    metadata: {labels: {app: frontend}}
+    spec:
+      securityContext: {runAsNonRoot: true}
+      containers:
+      - name: frontend
+        image: REPLACE_ECR/frontend:latest
+        ports: [{containerPort: 8080}]
+        resources: {requests: {cpu: 50m, memory: 64Mi}, limits: {cpu: 250m, memory: 256Mi}}
+---
+apiVersion: v1
+kind: Service
+metadata: {name: frontend, namespace: bgcv-servicehub}
+spec: {selector: {app: frontend}, ports: [{port: 80, targetPort: 8080}]}

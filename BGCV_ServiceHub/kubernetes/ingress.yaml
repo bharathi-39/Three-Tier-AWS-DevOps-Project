@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: servicehub
+  namespace: bgcv-servicehub
+  annotations: {kubernetes.io/ingress.class: alb}
+spec:
+  rules:
+  - host: servicehub.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend: {service: {name: frontend, port: {number: 80}}}

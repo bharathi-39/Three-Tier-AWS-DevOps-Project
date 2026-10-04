@@ -464,28 +464,6 @@ curl http://localhost:5000/api/health/ready
 ## Recommended Repository Documentation Structure
 
 ```text
-service-desk-portal/
-├── docs/
-│   ├── deployment/
-│   │   └── EKS_FARGATE_DEPLOYMENT_PROGRESS.md
-│   ├── troubleshooting/
-│   │   └── README.md
-│   └── API.md
-├── kubernetes/
-│   ├── namespace.yaml
-│   ├── config.yaml
-│   ├── app.yaml
-│   └── ingress.yaml
-├── frontend/
-├── backend/
-├── database/
-└── README.md
-```
-
-Suggested location for this file:
-
-```text
-docs/deployment/EKS_FARGATE_DEPLOYMENT_PROGRESS.md
 ```
 
 ---
